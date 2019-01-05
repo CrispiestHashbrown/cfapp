@@ -1,14 +1,21 @@
 page-login {
-
-}
-
-.logo {
-  margin: 0 auto;
-  display: block;
-}
-
-.footer {
-  button {
-      margin-bottom: 20px;
+  .logo {
+    margin: 0 auto;
+    display: block;
+  }
+  
+  p {
+    text-align: center;
+  }
+  
+  li {
+    list-style-type: none;
+    text-align: center;
+  }
+  
+  .footer {
+    button {
+        margin-bottom: 20px;
+    }
   }
 }

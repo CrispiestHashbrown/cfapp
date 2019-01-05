@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
+import { InAppBrowser, InAppBrowserEvent } from '@ionic-native/in-app-browser';
 
 @IonicPage()
 @Component({
@@ -7,12 +8,27 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  constructor(private navCtrl: NavController, private inAppBrowser: InAppBrowser) {}
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  isGranted: boolean = false;
+  private scopeQueryString: string;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+  navigateToPage(pageName: string) {
+    if (this.isGranted) {
+      this.scopeQueryString = '?scope=public_repo,read:user,user:follow';
+    }
+
+    const url = `https://commitfrequency.firebaseapp.com/__/auth/${this.scopeQueryString}`;
+    const browser = this.inAppBrowser.create(url, '_blank', 'hardwareback=no,hidenavigationbuttons=yes,clearsessioncache=no');
+    browser.on('loadstop').subscribe((event: InAppBrowserEvent) => {
+      const closeUrl = 'https://commitfrequency.firebaseapp.com/__/auth/handler';
+      if (event.url.startsWith(closeUrl)) {
+        browser.close();
+        this.navCtrl.setRoot(pageName);
+      }
+    }, err => {
+      console.error(`Error while logging in: ${err}`);
+    });
   }
 
 }
