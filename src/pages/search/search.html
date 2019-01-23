@@ -27,10 +27,12 @@
   </ng-template>
 
   <ng-template #elseBlock>
-    <ion-item text-wrap *ngFor="let repo of searchResults | keyvalue: keyDescValueOrder">
-        <p>{{repo.key}}</p>
-        <p>{{repo.value.name}}</p>
-    </ion-item>
+    <ion-list>
+        <ion-item text-wrap *ngFor="let repo of searchResults | keyvalue: keyDescValueOrder">
+            <p>{{repo.key}}</p>
+            <p>{{repo.value.name}}</p>
+        </ion-item>
+    </ion-list>
   </ng-template>
 
   <ion-infinite-scroll (ionInfinite)="renderMoreResults(searchQuery, $event)">
