@@ -11,24 +11,24 @@ import { KeyValue } from '@angular/common';
 export class SearchPage {
 
   searchQuery: string;
-  firstPage: number = 1;
-  pageNumber: number;
   resultsCount: number;
-  linkHeader: string;
+  linkHeader: string = '';
   searchResults: any = [];
 
   constructor(private searchService: SearchServiceProvider) {
   }
 
-  requestSearch(query: string, page?: number, infiniteScroll?) {
-    if (page) {
-      this.pageNumber = page;
+  requestSearch(query: string, infiniteScroll?) {
+    if (!infiniteScroll) {
+      this.linkHeader = '';
       this.searchResults = [];
     }
-    this.searchService.requestSearchRepos(`${query}&page=${this.pageNumber}`)
+    this.searchService.requestSearchRepos(`${query}`)
       .subscribe(res => {
+        if (res.headers.get('Link') != null) {
+          this.linkHeader = res.headers.get('Link');
+        }
         this.resultsCount = res.body.total_count;
-        this.linkHeader = res.headers.get('Link');
         this.searchResults.push(... res.body.items);
         if (infiniteScroll) {
           infiniteScroll.complete();
@@ -36,21 +36,25 @@ export class SearchPage {
       });
   }
 
-  renderMoreResults(query:string, infiniteScroll) {
-    if (this.isAnotherPage()) {
-      this.requestSearch(query, undefined, infiniteScroll);
+  renderMoreResults(infiniteScroll) {
+    if (this.linkHeader.length > 0) {
+      this.requestSearch(this.nextPage(this.linkHeader), infiniteScroll);
     } else {
       infiniteScroll.enable(false);
     }
   }
-  
-  isAnotherPage() {
-    const doesNextLinkExist = this.linkHeader.includes(`; rel="next",`);
+
+  nextPage(headerString: string) {
+    var nextLink: string = '';
+    const doesNextLinkExist = headerString.includes(`>; rel="next",`);
     if (doesNextLinkExist) {
-      this.pageNumber++;
-      return true;
+      var split = headerString.split(', <');
+      nextLink = split.find(function (element) {
+        return element.includes(`>; rel="next"`);
+      });
+      nextLink = nextLink.substring(nextLink.indexOf(`q=`)+2, nextLink.indexOf(`>; rel="next"`));
     }
-    return false;
+    return nextLink;
   }
 
   keyDescValueOrder = (a: KeyValue<number,any>, b: KeyValue<number,any>): number => {

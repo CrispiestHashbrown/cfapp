@@ -1,22 +1,13 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>Search</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
 <ion-content padding>
 
   <ion-item>
     <ion-searchbar
-      type=text placeholder='Search Repositories' type=text [(ngModel)]="searchQuery" (keyup.enter)="requestSearch(searchQuery, firstPage, undefined)" clearInput>
+      type=text placeholder='Search Repositories' type=text [(ngModel)]="searchQuery" (keyup.enter)="requestSearch(searchQuery, undefined)" clearInput>
     </ion-searchbar>
   </ion-item>
 
   <ion-row float=right>
-    <button ion-button small style="text-transform: none;" (click)="requestSearch(searchQuery, firstPage, undefined)">Run Search</button>
+    <button ion-button small style="text-transform: none;" (click)="requestSearch(searchQuery, undefined)">Run Search</button>
     <button ion-button small style="text-transform: none;">Advanced Search Options</button>
   </ion-row>
 
@@ -35,7 +26,7 @@
     </ion-list>
   </ng-template>
 
-  <ion-infinite-scroll (ionInfinite)="renderMoreResults(searchQuery, $event)">
+  <ion-infinite-scroll (ionInfinite)="renderMoreResults($event)">
     <ion-infinite-scroll-content 
       loadingSpinner="bubbles"
       loadingText="Loading more data...">
