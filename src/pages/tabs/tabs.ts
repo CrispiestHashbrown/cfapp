@@ -11,13 +11,11 @@ export class TabsPage {
   tab1Root: string;
   tab2Root: string;
   tab3Root: string;
-  tab4Root: string;
 
   constructor() {
     this.tab1Root = 'SearchPage';
     this.tab2Root = 'StarredPage';
-    this.tab3Root = 'FollowedPage';
-    this.tab4Root = 'ReposPage';
+    this.tab3Root = 'IssuesPage';
   }
 
 }
