@@ -1,23 +1,14 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>Search</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
+<ion-content>
 
   <ion-item>
     <ion-searchbar
-      type=text placeholder='Search Repositories' type=text [(ngModel)]="searchQuery" (keyup.enter)="requestSearch(searchQuery, firstPage, undefined)" clearInput>
+      type=text placeholder='Search Repositories' [(ngModel)]="searchQuery" (keyup.enter)="requestSearch(searchQuery, undefined)" clearInput>
     </ion-searchbar>
   </ion-item>
 
-  <ion-row float=right>
-    <button ion-button small style="text-transform: none;" (click)="requestSearch(searchQuery, firstPage, undefined)">Run Search</button>
-    <button ion-button small style="text-transform: none;">Advanced Search Options</button>
+  <ion-row>
+    <button ion-button small color=light (click)="requestSearch(searchQuery, undefined)">Run Search</button>
+    <button ion-button small color=light >Advanced Search Options</button>
   </ion-row>
 
   <ion-item *ngIf="resultsCount===0; then thenBlock; else elseBlock"></ion-item>
@@ -27,15 +18,24 @@
   </ng-template>
 
   <ng-template #elseBlock>
-    <ion-item text-wrap *ngFor="let repo of searchResults | keyvalue: keyDescValueOrder">
-        <p>{{repo.key}}</p>
-        <p>{{repo.value.name}}</p>
-    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let repo of searchResults">
+        <h2 text-wrap class=repo strong=true clear (click)="navigateToGitHub(repo.url)">{{repo.fullName}}</h2> 
+        <button ion-button color=commits>Commits</button>
+        <button ion-button color=medium>
+          <ion-icon slot="start" name="star">&nbsp;</ion-icon>
+          {{repo.stars}}
+        </button>
+        <ion-badge class=language>{{repo.language}}</ion-badge>
+        <ion-badge class=help>help wanted</ion-badge>
+        <p padding-top=10px text-wrap>{{repo.description}}</p>
+      </ion-item>
+    </ion-list>
   </ng-template>
 
-  <ion-infinite-scroll (ionInfinite)="renderMoreResults(searchQuery, $event)">
+  <ion-infinite-scroll (ionInfinite)="renderMoreResults($event)">
     <ion-infinite-scroll-content 
-      loadingSpinner="bubbles"
+      loadingSpinner="crescent"
       loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
