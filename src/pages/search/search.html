@@ -2,13 +2,13 @@
 
   <ion-item>
     <ion-searchbar
-      type=text placeholder='Search Repositories' type=text [(ngModel)]="searchQuery" (keyup.enter)="requestSearch(searchQuery, undefined)" clearInput>
+      type=text placeholder='Search Repositories' [(ngModel)]="searchQuery" (keyup.enter)="requestSearch(searchQuery, undefined)" clearInput>
     </ion-searchbar>
   </ion-item>
 
   <ion-row float=right>
-    <button ion-button small style="text-transform: none;" (click)="requestSearch(searchQuery, undefined)">Run Search</button>
-    <button ion-button small style="text-transform: none;">Advanced Search Options</button>
+    <button ion-button small color=light (click)="requestSearch(searchQuery, undefined)">Run Search</button>
+    <button ion-button small color=light >Advanced Search Options</button>
   </ion-row>
 
   <ion-item *ngIf="resultsCount===0; then thenBlock; else elseBlock"></ion-item>
