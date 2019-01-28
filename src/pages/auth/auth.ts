@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 
 @IonicPage()
@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthPage {
 
-  constructor(private navCtrl: NavController, private http: HttpClient, private loadingCtrl: LoadingController) {
+  constructor(private navCtrl: NavController, private http: HttpClient) {
   }
 
   ngOnInit() {
