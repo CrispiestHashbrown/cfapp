@@ -1,5 +1,21 @@
 page-search {
+  .repo {
+    margin: 0 auto;
+    font-size: 16px !important;
+    color: color($colors, url);
+  }
+
   ion-row {
     float: right;
+  }
+
+  .language {
+    background: color($colors, language) !important;
+    color: color($colors, dark) !important;
+  }
+
+  .help {
+    background: color($colors, help) !important;
+    color: color($colors, dark) !important;
   }
 }

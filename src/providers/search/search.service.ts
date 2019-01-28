@@ -9,7 +9,7 @@ export class SearchServiceProvider {
   constructor(private http: HttpClient) {
   }
 
-  requestSearchRepos(query: string): Observable<HttpResponse<any>> {
+  searchForRepos(query: string): Observable<HttpResponse<any>> {
     const url = `https://commitfrequency.firebaseapp.com/search/repositories?q=${query}`;
     return this.http.get<any>(url, { observe: 'response' }).pipe(delay(2015));
   }
