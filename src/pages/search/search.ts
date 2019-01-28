@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Search } from '../../models/search/search.interface';
 import { SearchServiceProvider } from '../../providers/search/search.service';
-import { KeyValue } from '@angular/common';
 
 @IonicPage()
 @Component({
@@ -13,23 +14,33 @@ export class SearchPage {
   searchQuery: string;
   resultsCount: number;
   linkHeader: string = '';
-  searchResults: any = [];
+  searchResults: Search[] = [];
 
-  constructor(private searchService: SearchServiceProvider) {
-  }
+  constructor(
+    private searchService: SearchServiceProvider,
+    private inAppBrowser: InAppBrowser) {}
 
   requestSearch(query: string, infiniteScroll?) {
     if (!infiniteScroll) {
       this.linkHeader = '';
       this.searchResults = [];
     }
-    this.searchService.requestSearchRepos(`${query}`)
+    this.searchService.searchForRepos(`${query}`)
       .subscribe(res => {
         if (res.headers.get('Link') != null) {
           this.linkHeader = res.headers.get('Link');
         }
         this.resultsCount = res.body.total_count;
-        this.searchResults.push(... res.body.items);
+        for (var repo of res.body.items) {
+          this.searchResults.push(... [{
+            "fullName": repo.full_name,
+            "url": repo.html_url, 
+            "stars": repo.stargazers_count, 
+            "description": repo.description, 
+            "language": repo.language,
+            "score": repo.score
+          }]);
+        }
         if (infiniteScroll) {
           infiniteScroll.complete();
         }
@@ -57,8 +68,8 @@ export class SearchPage {
     return nextLink;
   }
 
-  keyDescValueOrder = (a: KeyValue<number,any>, b: KeyValue<number,any>): number => {
-    return Math.min(a.key, b.key);
+  navigateToGitHub(url: string) {
+    this.inAppBrowser.create(url, '_blank', 'clearsessioncache=no');
   }
 
 }
