@@ -13,6 +13,7 @@ export class SearchPage {
 
   searchQuery: string;
   resultsCount: number;
+  hideInfiniteScroll: boolean;
   linkHeader: string = '';
   searchResults: Search[] = [];
 
@@ -22,6 +23,7 @@ export class SearchPage {
 
   requestSearch(query: string, infiniteScroll?) {
     if (!infiniteScroll) {
+      this.hideInfiniteScroll = false;
       this.linkHeader = '';
       this.searchResults = [];
     }
@@ -44,14 +46,19 @@ export class SearchPage {
         if (infiniteScroll) {
           infiniteScroll.complete();
         }
+      },
+      err => {
+        console.log(`Error while searching for repos: ${err}`);
       });
   }
 
   renderMoreResults(infiniteScroll) {
-    if (this.linkHeader.length > 0) {
-      this.requestSearch(this.nextPage(this.linkHeader), infiniteScroll);
+    var nextPage = this.nextPage(this.linkHeader);
+    if (this.linkHeader.length < 1 || nextPage.length < 1) {
+      this.hideInfiniteScroll = true;
     } else {
-      infiniteScroll.enable(false);
+      this.hideInfiniteScroll = false;
+      this.requestSearch(nextPage, infiniteScroll);
     }
   }
 
