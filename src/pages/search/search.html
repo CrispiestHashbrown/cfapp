@@ -11,13 +11,13 @@
     <button ion-button small color=light >Advanced Search Options</button>
   </ion-row>
 
-  <ion-item *ngIf="resultsCount===0; then thenBlock; else elseBlock"></ion-item>
+  <ion-item *ngIf="resultsCount===0; then noResultsBlock; else resultsBlock"></ion-item>
 
-  <ng-template #thenBlock>
-      <ion-item>No Results.</ion-item>
+  <ng-template #noResultsBlock>
+      <ion-item>No results found.</ion-item>
   </ng-template>
 
-  <ng-template #elseBlock>
+  <ng-template #resultsBlock>
     <ion-list>
       <ion-item *ngFor="let repo of searchResults">
         <h2 text-wrap class=repo strong=true clear (click)="navigateToGitHub(repo.url)">{{repo.fullName}}</h2> 
@@ -33,11 +33,19 @@
     </ion-list>
   </ng-template>
 
-  <ion-infinite-scroll (ionInfinite)="renderMoreResults($event)">
-    <ion-infinite-scroll-content 
-      loadingSpinner="crescent"
-      loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  <ion-item *ngIf="hideInfiniteScroll; then noScrollBlock; else scrollBlock"></ion-item>
+
+  <ng-template #noScrollBlock>
+    <ion-item>End of search results.</ion-item>
+  </ng-template>
+
+  <ng-template #scrollBlock>
+    <ion-infinite-scroll threshold="20%" (ionInfinite)="renderMoreResults($event)">
+      <ion-infinite-scroll-content 
+        loadingSpinner="crescent"
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-template>
 
 </ion-content>
