@@ -1,5 +1,5 @@
 page-search {
-  .repo {
+  .repository {
     margin: 0 auto;
     font-size: 16px !important;
     color: color($colors, url);
@@ -9,13 +9,22 @@ page-search {
     float: right;
   }
 
+  ion-item ion-badge {
+    margin-right: 0.5px;
+  }
+
+  .commits {
+    background: color($colors, commits) !important;
+    color: color($colors, dark) !important;
+  }
+
   .language {
     background: color($colors, language) !important;
     color: color($colors, dark) !important;
   }
 
-  .help {
-    background: color($colors, help) !important;
+  .stars {
+    background: transparent;
     color: color($colors, dark) !important;
   }
 }
