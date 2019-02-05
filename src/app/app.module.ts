@@ -7,7 +7,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
-import { SearchServiceProvider } from '../providers/search/search.service';
 
 @NgModule({
   declarations: [
@@ -26,8 +25,7 @@ import { SearchServiceProvider } from '../providers/search/search.service';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    InAppBrowser,
-    SearchServiceProvider
+    InAppBrowser
   ]
 })
 export class AppModule {}
