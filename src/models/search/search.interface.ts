@@ -5,4 +5,5 @@ export interface Search {
   description: string;
   language: string;
   score: number;
+  shouldPresentGraph: boolean;
 }
