@@ -1,16 +1,23 @@
 page-search {
-  .repository {
-    margin: 0 auto;
-    font-size: 16px !important;
-    color: color($colors, url);
-  }
-
   ion-row {
     float: right;
   }
 
   ion-item ion-badge {
     margin-right: 0.5px;
+  }
+
+  commit-graph {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .repository {
+    margin: 0 auto;
+    font-size: 16px !important;
+    color: color($colors, url);
   }
 
   .commits {

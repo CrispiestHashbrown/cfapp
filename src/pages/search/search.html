@@ -2,8 +2,11 @@
 
   <ion-item>
     <ion-searchbar
-      type=text placeholder='Search Repositories' [(ngModel)]="searchQuery" (keyup.enter)="requestSearch(searchQuery, undefined)" clearInput>
-    </ion-searchbar>
+      type=text 
+      placeholder='Search Repositories' 
+      [(ngModel)]="searchQuery" 
+      (keyup.enter)="requestSearch(searchQuery, undefined)" 
+      clearInput></ion-searchbar>
   </ion-item>
 
   <ion-row>
@@ -31,7 +34,7 @@
           {{repo.fullName}}
         </h2> 
 
-        <button ion-button class=commits>
+        <button ion-button class=commits (click)="repo.shouldPresentGraph = !repo.shouldPresentGraph">
           Commits
         </button>
 
@@ -49,6 +52,8 @@
         <p padding-top=10px text-wrap>
           {{repo.description}}
         </p>
+
+        <commit-graph *ngIf="repo.shouldPresentGraph" [fullName]="repo.fullName"></commit-graph>
       </ion-item>
     </ion-list>
   </ng-template>

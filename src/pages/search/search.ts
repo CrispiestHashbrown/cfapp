@@ -40,7 +40,8 @@ export class SearchPage {
             "stars": repo.stargazers_count, 
             "description": repo.description, 
             "language": repo.language,
-            "score": repo.score
+            "score": repo.score,
+            "shouldPresentGraph": false
           }]);
         }
         if (infiniteScroll) {
