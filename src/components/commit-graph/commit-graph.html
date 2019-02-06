@@ -1,0 +1,10 @@
+<ion-item no-lines style="display: block" *ngIf="fullName">
+  <canvas baseChart
+          [datasets]="commitData"
+          [labels]="weeksLabels"
+          [options]="barChartOptions"
+          [colors]="barChartColors"
+          [chartType]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+</ion-item>

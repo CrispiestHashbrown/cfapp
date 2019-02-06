@@ -13,7 +13,7 @@ export class LoginPage {
   isGranted: boolean = false;
   private scopeQueryString: string;
 
-  navigateToPage(pageName: string) {
+  navigateToPage() {
     if (this.isGranted) {
       this.scopeQueryString = '?scope=public_repo,read:user,user:follow';
     }
@@ -24,7 +24,7 @@ export class LoginPage {
       const closeUrl = 'https://commitfrequency.firebaseapp.com/__/auth/handler';
       if (event.url.startsWith(closeUrl)) {
         browser.close();
-        this.navCtrl.setRoot(pageName);
+        this.navCtrl.setRoot('TabsPage');
       }
     }, err => {
       console.error(`Error while logging in: ${err}`);

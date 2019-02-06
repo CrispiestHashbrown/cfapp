@@ -1,12 +1,28 @@
 page-search {
-  .repo {
+  ion-row {
+    float: right;
+  }
+
+  ion-item ion-badge {
+    margin-right: 0.5px;
+  }
+
+  commit-graph {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .repository {
     margin: 0 auto;
     font-size: 16px !important;
     color: color($colors, url);
   }
 
-  ion-row {
-    float: right;
+  .commits {
+    background: color($colors, commits) !important;
+    color: color($colors, dark) !important;
   }
 
   .language {
@@ -14,8 +30,8 @@ page-search {
     color: color($colors, dark) !important;
   }
 
-  .help {
-    background: color($colors, help) !important;
+  .stars {
+    background: transparent;
     color: color($colors, dark) !important;
   }
 }
