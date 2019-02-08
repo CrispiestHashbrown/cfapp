@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Search } from '../../models/search/search.interface';
 import { SearchServiceProvider } from '../../providers/search/search.service';
@@ -18,8 +18,15 @@ export class SearchPage {
   searchResults: Search[] = [];
 
   constructor(
+    private navCtrl: NavController,
+    public navParams: NavParams,
     private searchService: SearchServiceProvider,
-    private inAppBrowser: InAppBrowser) {}
+    private inAppBrowser: InAppBrowser) {
+      if (navParams.get('fullQuery')) {
+        this.searchQuery = navParams.get('fullQuery');
+        this.requestSearch(this.searchQuery);
+      }
+    }
 
   requestSearch(query: string, infiniteScroll?) {
     if (!infiniteScroll) {
@@ -78,6 +85,10 @@ export class SearchPage {
 
   navigateToGitHub(url: string) {
     this.inAppBrowser.create(url, '_blank', 'clearsessioncache=no');
+  }
+
+  navigateToAdvancedSearchPage() {
+    this.navCtrl.push('AdvancedSearchPage');
   }
 
 }
