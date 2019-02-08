@@ -65,7 +65,6 @@ export class AdvancedSearchPage {
   forwardSearchQuery() {
     this.formSearchQuery();
     this.saveInputsToLocalStorage();
-    console.log(this.fullQuery);
     this.navCtrl.push('SearchPage', {
       fullQuery: this.fullQuery
     });

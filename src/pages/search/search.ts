@@ -54,8 +54,7 @@ export class SearchPage {
         if (infiniteScroll) {
           infiniteScroll.complete();
         }
-      },
-      err => {
+      }, err => {
         console.log(`Error while searching for repos: ${err}`);
       });
   }
