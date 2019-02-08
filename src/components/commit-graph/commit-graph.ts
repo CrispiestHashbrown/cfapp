@@ -11,9 +11,12 @@ export class CommitGraphComponent {
 
   @Input() fullName: string = '';
   weeksLabels: string[] = [];
-  commitData: any[] = [{data: [], label: 'Commits per Week'}];
+  commitData: any[] = [{
+    data: [], 
+    label: 'Commits per Week'
+  }];
   barChartColors: Array<any> = [{
-    backgroundColor: '#9CCC65'
+    backgroundColor: '#9ccc65'
   }];
   barChartType: string = 'bar';
   barChartOptions: any = {
@@ -36,7 +39,7 @@ export class CommitGraphComponent {
     this.getPastDates();
   }
 
-  chartClicked(e:any):void {
+  chartClicked(e: any):void {
     console.log(e);
   }
  
@@ -54,12 +57,10 @@ export class CommitGraphComponent {
             var clone = JSON.parse(JSON.stringify(this.commitData));
             clone[0].data = data;
             this.commitData = clone;
-          },
-          err => {
+          }, err => {
             console.log(`Error fetching commit stats: ${err}`);
           });
-      },
-      err => {
+      }, err => {
         console.log(`Error triggering GitHub job: ${err}`);
       });
   }

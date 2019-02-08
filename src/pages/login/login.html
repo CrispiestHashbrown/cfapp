@@ -11,27 +11,14 @@
   <img src="assets/imgs/logo.png" alt="Logo" class="logo">
 
   <ion-item>
-    <p text-wrap>
-      To proceed with this app, the following scopes must be granted:
-    </p>
-
-    <li>
-      public_repo
-    </li>
-
-    <li>
-      read:user
-    </li>
-    
-    <li>
-      user:follow
-    </li>
+    <p text-wrap>To proceed with this app, the following scopes must be granted:</p>
+    <li>public_repo</li>
+    <li>read:user</li>
+    <li>user:follow</li>
   </ion-item>
 
   <ion-item no-lines>
-    <ion-label text-wrap>
-      I agree to grant this app the above scopes
-    </ion-label>
+    <ion-label text-wrap>I agree to grant this app the above scopes</ion-label>
     <ion-checkbox [(ngModel)]="isGranted" checked="true" color="login"></ion-checkbox>
   </ion-item>
 
