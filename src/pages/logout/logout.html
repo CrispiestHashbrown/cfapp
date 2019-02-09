@@ -1,0 +1,28 @@
+<ion-content padding>
+  <img src="assets/imgs/logo.png" alt="Logo" class="logo">
+
+  <ion-item no-lines>
+    <p text-wrap>
+      Thanks for being a user! App authorization will expire after 4 days, even without doing anything.
+    </p>
+    <br>
+    <p text-wrap>
+      Logging out will revoke grants permitted. They will be requested again upon login.
+    </p>
+    <br>
+    <p text-wrap>
+      To review the permissions, log into GitHub and view the link below:
+    </p>
+    <br>
+    <p text-wrap class=github-url strong=true clear (click)="navigateToGitHub(url)">
+      https://github.com/settings/connections/applications/11ef443ae956d0e2bb73
+    </p>
+  </ion-item>
+
+  <ion-footer>
+    <button ion-button block (click)="logout()" color="light">
+      Log out of Commit Frequency App
+    </button>
+  </ion-footer>
+</ion-content>
+  
