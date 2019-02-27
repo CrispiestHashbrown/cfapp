@@ -8,9 +8,15 @@ export class LogoutServiceProvider {
   constructor(private http: HttpClient) {
   }
 
-  revokeTokenAccess(): Observable<HttpResponse<any>> {
+  revokeTokenAccess(ght: string): Observable<HttpResponse<any>> {
     const url = `https://commitfrequency.firebaseapp.com/__/auth/grants`;
-    return this.http.delete<any>(url, { observe: 'response' });
+    return this.http.delete(url, {
+      headers: {
+        'Authorization': `bearer ${ght}`
+      },
+      observe: 'response',
+      responseType: 'text' as 'text'
+    });
   }
 
 }
