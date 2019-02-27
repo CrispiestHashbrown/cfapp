@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
-import { HttpClient } from '@angular/common/http';
+import { IonicPage, NavController, App } from 'ionic-angular';
+import { AuthServiceProvider } from '../../providers/auth/auth.service';
 
 @IonicPage()
 @Component({
@@ -9,21 +9,21 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthPage {
 
-  constructor(private navCtrl: NavController, private http: HttpClient) {
+  constructor(private app: App, private navCtrl: NavController, private authService: AuthServiceProvider) {
   }
 
   ngOnInit() {
-    this.http.get('https://commitfrequency.firebaseapp.com/__/auth/ping', {observe: 'response'})
+    var ght = localStorage.getItem('ght');
+    if (!ght) {
+      this.app.getRootNav().setRoot('LoginPage');
+    } else {
+      this.authService.verifyToken(ght)
       .subscribe(res => {
-        if (res.status === 204) {
-          this.navCtrl.setRoot('TabsPage');
-        } else {
-          this.navCtrl.setRoot('LoginPage');
-        }
+        this.navCtrl.setRoot('TabsPage');
       }, err => {
-        console.log("Error: ", err);
-        this.navCtrl.setRoot('LoginPage');
+        this.app.getRootNav().setRoot('LoginPage');
       });
+    }
   }
 
 }

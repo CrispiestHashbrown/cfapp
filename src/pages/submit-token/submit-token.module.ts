@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { AuthPage } from './auth';
+import { SubmitTokenPage } from './submit-token';
 import { AuthServiceProvider } from '../../providers/auth/auth.service';
 
 @NgModule({
   declarations: [
-    AuthPage,
+    SubmitTokenPage,
   ],
   imports: [
-    IonicPageModule.forChild(AuthPage),
+    IonicPageModule.forChild(SubmitTokenPage),
   ],
   providers: [
     AuthServiceProvider
   ]
 })
-export class AuthPageModule {}
+export class SubmitTokenPageModule {}
