@@ -1,0 +1,23 @@
+<ion-header>
+  <button ion-button block (click)="returnToLoginPage()" color="login">
+    <ion-icon name="arrow-back">&nbsp;</ion-icon>
+    Back to Login Page
+  </button>  
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label stacked>Token</ion-label>
+    <ion-input 
+        type="text" 
+        [(ngModel)]="token" 
+        (keyup.enter)="submitToken()" 
+        clearInput>
+    </ion-input>
+  </ion-item>
+
+  <button ion-button block (click)="submitToken(token)" color="enabled">Submit</button>
+
+</ion-content>
