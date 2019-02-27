@@ -1,0 +1,28 @@
+<ion-content padding>
+  <img src="assets/imgs/logo.png" alt="Logo" class="logo">
+
+  <ion-item no-lines>
+    <p text-wrap>
+      Thanks for being a user!
+    </p>
+    <br>
+    <p text-wrap>
+      Revoking the token will redirect you to the login page. A new token will be requested again upon login.
+    </p>
+    <br>
+    <p text-wrap>
+      To review the permissions, or to delete your token yourself, you can view the link below:
+    </p>
+    <br>
+    <p text-wrap class=github-url strong=true clear (click)="navigateToGitHub(url)">
+      {{url}}
+    </p>
+  </ion-item>
+
+  <ion-footer>
+    <button ion-button block (click)="logout()" color="light">
+      Revoke authorization token
+    </button>
+  </ion-footer>
+</ion-content>
+  

@@ -1,0 +1,63 @@
+<ion-content>
+
+  <ion-navbar>
+    <ion-title>Advanced Search</ion-title>
+  </ion-navbar>
+
+  <ion-item>
+    <ion-searchbar
+        type=text
+        placeholder='Search Repositories'
+        clearInput
+        [(ngModel)]="searchQuery" 
+        (keyup.enter)="forwardSearchQuery()">
+    </ion-searchbar>
+  </ion-item>
+
+  <ion-row>
+    <button 
+        ion-button 
+        small 
+        color=light
+        (click)="forwardSearchQuery()">
+      Run Search
+    </button>
+  </ion-row>
+
+  <ion-item>
+    <ion-label stacked>From these owners</ion-label>
+    <ion-input type=text placeholder='ie: github, microsoft' [(ngModel)]="inputArray[0]">
+      {{inputArray[0]}}
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>With this many stars</ion-label>
+    <ion-input type=text placeholder='ie: 0..100, 200, >1000' [(ngModel)]="inputArray[1]">
+      {{inputArray[1]}}
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>Written in this language</ion-label>
+    <ion-select [(ngModel)]="inputArray[2]" placeholder='Language (default: Any)' [selectedText]="inputArray[2]">
+      <ion-option value="">Any</ion-option>
+      <ion-option *ngFor="let language of languageArray" [value]="language">{{language}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>With this many issues labeled good-first-issue</ion-label>
+    <ion-input type=text placeholder='ie: >2' [(ngModel)]="inputArray[3]">
+      {{inputArray[3]}}
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked>With this many issues labeled help-wanted</ion-label>
+    <ion-input type=text placeholder='ie: >4' [(ngModel)]="inputArray[4]">
+      {{inputArray[4]}}
+    </ion-input>
+  </ion-item>
+
+</ion-content>

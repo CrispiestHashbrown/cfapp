@@ -1,0 +1,14 @@
+page-advanced-search {
+  .toolbar-md {
+    padding: 4px;
+    min-height: 44px;
+  }
+
+  .toolbar-title-md {
+    color: color($colors, primary) !important;
+  }
+
+  .toolbar-background-md {
+    background: color($colors, white) !important;
+  }
+}

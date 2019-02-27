@@ -3,18 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class CommitCountServiceProvider {
+export class LogoutServiceProvider {
 
   constructor(private http: HttpClient) {
   }
 
-  getRepoCommitCount(fullName: string, ght: string): Observable<HttpResponse<any>> {
-    const url = `https://commitfrequency.firebaseapp.com/repocommitcount/${fullName}`;
-    return this.http.get<any>(url, {
+  revokeTokenAccess(ght: string): Observable<HttpResponse<any>> {
+    const url = `https://commitfrequency.firebaseapp.com/__/auth/grants`;
+    return this.http.delete(url, {
       headers: {
         'Authorization': `bearer ${ght}`
       },
-      observe: 'response'
+      observe: 'response',
+      responseType: 'text' as 'text'
     });
   }
 

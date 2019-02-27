@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AlertController } from 'ionic-angular';
 import { Search } from '../../models/search/search.interface';
 import { SearchServiceProvider } from '../../providers/search/search.service';
 
@@ -18,8 +19,17 @@ export class SearchPage {
   searchResults: Search[] = [];
 
   constructor(
-    private searchService: SearchServiceProvider,
-    private inAppBrowser: InAppBrowser) {}
+    private app: App,
+    private navCtrl: NavController,
+    public navParams: NavParams,
+    private alertCtrl: AlertController,
+    private inAppBrowser: InAppBrowser,
+    private searchService: SearchServiceProvider) {
+      if (navParams.get('fullQuery')) {
+        this.searchQuery = navParams.get('fullQuery');
+        this.requestSearch(this.searchQuery);
+      }
+    }
 
   requestSearch(query: string, infiniteScroll?) {
     if (!infiniteScroll) {
@@ -27,30 +37,36 @@ export class SearchPage {
       this.linkHeader = '';
       this.searchResults = [];
     }
-    this.searchService.searchForRepos(`${query}`)
-      .subscribe(res => {
-        if (res.headers.get('Link') != null) {
-          this.linkHeader = res.headers.get('Link');
-        }
-        this.resultsCount = res.body.total_count;
-        for (var repo of res.body.items) {
-          this.searchResults.push(... [{
-            "fullName": repo.full_name,
-            "url": repo.html_url, 
-            "stars": repo.stargazers_count, 
-            "description": repo.description, 
-            "language": repo.language,
-            "score": repo.score,
-            "shouldPresentGraph": false
-          }]);
-        }
-        if (infiniteScroll) {
-          infiniteScroll.complete();
-        }
-      },
-      err => {
-        console.log(`Error while searching for repos: ${err}`);
-      });
+
+    var ght = localStorage.getItem('ght');
+    if (!ght) {
+      this.showNoTokenAlert();
+      this.app.getRootNav().setRoot('LoginPage');
+    } else {
+      this.searchService.searchForRepos(`${query}`, ght)
+        .subscribe(res => {
+          if (res.headers.get('Link') != null) {
+            this.linkHeader = res.headers.get('Link');
+          }
+          this.resultsCount = res.body.total_count;
+          for (var repo of res.body.items) {
+            this.searchResults.push(... [{
+              "fullName": repo.full_name,
+              "url": repo.html_url, 
+              "stars": repo.stargazers_count, 
+              "description": repo.description, 
+              "language": repo.language,
+              "score": repo.score,
+              "shouldPresentGraph": false
+            }]);
+          }
+          if (infiniteScroll) {
+            infiniteScroll.complete();
+          }
+        }, err => {
+          this.showSearchAlert(err.message);
+        });
+    }
   }
 
   renderMoreResults(infiniteScroll) {
@@ -78,6 +94,28 @@ export class SearchPage {
 
   navigateToGitHub(url: string) {
     this.inAppBrowser.create(url, '_blank', 'clearsessioncache=no');
+  }
+
+  navigateToAdvancedSearchPage() {
+    this.navCtrl.push('AdvancedSearchPage');
+  }
+
+  showNoTokenAlert() {
+    const alert = this.alertCtrl.create({
+      title: 'Error',
+      subTitle: `No token`,
+      buttons: ['SORRY']
+    });
+    alert.present();
+  }
+
+  showSearchAlert(message: string) {
+    const alert = this.alertCtrl.create({
+      title: 'GitHub Error',
+      subTitle: `Error searching for GitHub results: ${message}`,
+      buttons: ['SORRY']
+    });
+    alert.present();
   }
 
 }
