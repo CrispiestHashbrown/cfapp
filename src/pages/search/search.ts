@@ -47,6 +47,8 @@ export class SearchPage {
         .subscribe(res => {
           if (res.headers.get('Link') != null) {
             this.linkHeader = res.headers.get('Link');
+          } else {
+            this.hideInfiniteScroll = true;
           }
           this.resultsCount = res.body.total_count;
           for (var repo of res.body.items) {
