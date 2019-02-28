@@ -1,0 +1,13 @@
+<ion-item no-lines style="display: block" *ngIf="starred; then unstarBlock; else starBlock"></ion-item>
+
+<ng-template #unstarBlock>
+  <button ion-button class=starOrUnstarButton (click)="unstarRepository(fullName)">
+    Unstar
+  </button>
+</ng-template>
+
+<ng-template #starBlock>
+  <button ion-button class=starOrUnstarButton (click)="starRepository(fullName)">
+    Star
+  </button>
+</ng-template>

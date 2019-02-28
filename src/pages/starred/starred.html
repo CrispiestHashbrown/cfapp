@@ -1,0 +1,56 @@
+<ion-content>
+
+  <ion-item *ngIf="starredResults.length===0; then noResultsBlock; else resultsBlock"></ion-item>
+
+  <ng-template #noResultsBlock>
+      <ion-item>No starred repositories found.</ion-item>
+  </ng-template>
+
+  <ng-template #resultsBlock>
+    <ion-list>
+      <ion-item *ngFor="let repo of starredResults">
+        <h2
+            text-wrap
+            class=repository
+            strong=true
+            clear
+            (click)="navigateToGitHub(repo.url)">
+          {{repo.fullName}}
+        </h2>
+
+        <button ion-button class=commits (click)="repo.shouldPresentGraph = !repo.shouldPresentGraph">
+          Commits
+        </button>
+
+        <ion-badge class=stars>
+          <ion-icon name="star">&nbsp;</ion-icon>
+          {{repo.stars}}
+        </ion-badge>
+
+        <ion-badge class=language>{{repo.language}}</ion-badge>
+        <star-repo-button [fullName]="repo.fullName"></star-repo-button>
+        <p padding-top=10px text-wrap>{{repo.description}}</p>
+        <commit-graph *ngIf="repo.shouldPresentGraph" [fullName]="repo.fullName"></commit-graph>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+
+  <ion-item *ngIf="hideInfiniteScroll; then noScrollBlock; else scrollBlock"></ion-item>
+
+  <ng-template #noScrollBlock>
+    <ion-item>
+      End of results.
+    </ion-item>
+  </ng-template>
+
+  <ng-template #scrollBlock>
+    <ion-infinite-scroll threshold="20%" (ionInfinite)="renderMoreResults($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="crescent"
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-template>
+  
+</ion-content>
+  
