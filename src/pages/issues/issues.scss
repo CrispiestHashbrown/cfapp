@@ -1,0 +1,26 @@
+page-issues {
+  ion-row {
+    float: right;
+  }
+
+  ion-item ion-badge {
+    margin-right: 0.5px;
+  }
+
+  .issueUrl {
+    margin: 0 auto;
+    font-size: 16px !important;
+    color: color($colors, url);
+  }
+
+  .issueNumber {
+    background: color($colors, issueNumber) !important;
+    color: color($colors, dark) !important;
+  }
+
+  .issue-repository-fullname {
+    background: color($colors, repo) !important;
+    color: color($colors, dark) !important;
+  }
+  
+}
