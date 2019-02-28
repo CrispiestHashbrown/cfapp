@@ -1,58 +1,52 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, App } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AlertController } from 'ionic-angular';
 import { Search } from '../../models/search/search.interface';
-import { SearchServiceProvider } from '../../providers/search/search.service';
+import { StarredServiceProvider } from '../../providers/starred/starred.service';
 
 @IonicPage()
 @Component({
-  selector: 'page-search',
-  templateUrl: 'search.html',
+  selector: 'page-starred',
+  templateUrl: 'starred.html',
 })
-export class SearchPage {
+export class StarredPage {
 
-  searchQuery: string;
-  resultsCount: number;
   hideInfiniteScroll: boolean;
   linkHeader: string = '';
-  searchResults: Search[] = [];
+  starredResults: Search[] = [];
 
   constructor(
     private app: App,
-    private navCtrl: NavController,
-    public navParams: NavParams,
     private alertCtrl: AlertController,
-    private inAppBrowser: InAppBrowser,
-    private searchService: SearchServiceProvider) {
-      if (navParams.get('fullQuery')) {
-        this.searchQuery = navParams.get('fullQuery');
-        this.requestSearch(this.searchQuery);
-      }
-    }
+    private starredService: StarredServiceProvider,
+    private inAppBrowser: InAppBrowser) {
+  }
 
-  requestSearch(query: string, infiniteScroll?) {
+  ionViewDidEnter() {
+    this.requestStarredRepositories();
+  }
+
+  requestStarredRepositories(infiniteScroll?) {
     if (!infiniteScroll) {
       this.hideInfiniteScroll = false;
       this.linkHeader = '';
-      this.searchResults = [];
+      this.starredResults = [];
     }
-
     var ght = localStorage.getItem('ght');
     if (!ght) {
       this.showNoTokenAlert();
       this.app.getRootNav().setRoot('LoginPage');
     } else {
-      this.searchService.searchForRepos(`${query}`, ght)
+      this.starredService.getStarredRepos(ght)
         .subscribe(res => {
           if (res.headers.get('Link') != null) {
             this.linkHeader = res.headers.get('Link');
           } else {
             this.hideInfiniteScroll = true;
           }
-          this.resultsCount = res.body.total_count;
-          for (var repo of res.body.items) {
-            this.searchResults.push(... [{
+          for (var repo of res.body) {
+            this.starredResults.push(... [{
               "fullName": repo.full_name,
               "url": repo.html_url, 
               "stars": repo.stargazers_count, 
@@ -66,7 +60,7 @@ export class SearchPage {
             infiniteScroll.complete();
           }
         }, err => {
-          this.showSearchAlert(err.message);
+          this.showStarredAlert(err.message);
         });
     }
   }
@@ -77,7 +71,7 @@ export class SearchPage {
       this.hideInfiniteScroll = true;
     } else {
       this.hideInfiniteScroll = false;
-      this.requestSearch(nextPage, infiniteScroll);
+      this.requestStarredRepositories(infiniteScroll);
     }
   }
 
@@ -98,10 +92,6 @@ export class SearchPage {
     this.inAppBrowser.create(url, '_blank', 'clearsessioncache=no');
   }
 
-  navigateToAdvancedSearchPage() {
-    this.navCtrl.push('AdvancedSearchPage');
-  }
-
   showNoTokenAlert() {
     const alert = this.alertCtrl.create({
       title: 'Error',
@@ -111,10 +101,10 @@ export class SearchPage {
     alert.present();
   }
 
-  showSearchAlert(message: string) {
+  showStarredAlert(message: string) {
     const alert = this.alertCtrl.create({
       title: 'GitHub Error',
-      subTitle: `Error searching for GitHub results: ${message}`,
+      subTitle: `Error fetching starred repositories: ${message}`,
       buttons: ['SORRY']
     });
     alert.present();
