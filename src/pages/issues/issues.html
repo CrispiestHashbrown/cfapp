@@ -1,14 +1,15 @@
 <ion-content>
 
-  <ion-item *ngIf="resultsCount===0; then noResultsBlock; else resultsBlock"></ion-item>
+  <ion-item *ngIf="issuesResults.length===0; then noResultsBlock; else resultsBlock"></ion-item>
 
   <ng-template #noResultsBlock>
-      <ion-item>No results found.</ion-item>
+      <ion-item>No assigned issues found.</ion-item>
   </ng-template>
 
   <ng-template #resultsBlock>
     <ion-list>
       <ion-item *ngFor="let issue of issuesResults">
+        <br>
         <h2
             text-wrap
             class=issueUrl
@@ -18,7 +19,8 @@
           {{issue.title}}
         </h2>
         <ion-badge class=issueNumber>#{{issue.number}}</ion-badge>
-        <ion-badge class=repository>{{issue.repository}}</ion-badge>
+        <ion-badge class=issue-repository-fullname>{{issue.repository}}</ion-badge>
+        <br>
       </ion-item>
     </ion-list>
   </ng-template>

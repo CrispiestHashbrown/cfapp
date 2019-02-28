@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, App } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { AlertController } from 'ionic-angular';
 import { Issues } from '../../models/issues/issues.interface';
 import { IssuesServiceProvider } from '../../providers/issues/issues.service';
 
@@ -11,15 +12,18 @@ import { IssuesServiceProvider } from '../../providers/issues/issues.service';
 })
 export class IssuesPage {
 
-  resultsCount: number;
   hideInfiniteScroll: boolean;
   linkHeader: string = '';
   issuesResults: Issues[] = [];
 
-  constructor(private issuesService: IssuesServiceProvider, private inAppBrowser: InAppBrowser) {
+  constructor(
+    private app: App,
+    private alertCtrl: AlertController,
+    private issuesService: IssuesServiceProvider,
+    private inAppBrowser: InAppBrowser) {
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     this.requestIssues();
   }
 
@@ -29,26 +33,33 @@ export class IssuesPage {
       this.linkHeader = '';
       this.issuesResults = [];
     }
-    this.issuesService.getAssignedIssues()
-      .subscribe(res => {
-        if (res.headers.get('Link') != null) {
-          this.linkHeader = res.headers.get('Link');
-        }
-        this.resultsCount = res.body.total_count;
-        for (var issue of res.body.items) {
-          this.issuesResults.push(... [{
-            "title": issue.title,
-            "number": issue.number,
-            "url": issue.url,
-            "repository": issue.repository.full_name
-          }]);
-        }
-        if (infiniteScroll) {
-          infiniteScroll.complete();
-        }
-      }, err => {
-        console.log(`Error while getting starred repos: ${err}`);
-      });
+    var ght = localStorage.getItem('ght');
+    if (!ght) {
+      this.showNoTokenAlert();
+      this.app.getRootNav().setRoot('LoginPage');
+    } else {
+      this.issuesService.getAssignedIssues(ght)
+        .subscribe(res => {
+          if (res.headers.get('Link') != null) {
+            this.linkHeader = res.headers.get('Link');
+          } else {
+            this.hideInfiniteScroll = true;
+          }
+          for (var issue of res.body) {
+            this.issuesResults.push(... [{
+              "title": issue.title,
+              "number": issue.number,
+              "url": issue.html_url,
+              "repository": issue.repository.full_name
+            }]);
+          }
+          if (infiniteScroll) {
+            infiniteScroll.complete();
+          }
+        }, err => {
+          this.showIssuesAlert(err.message);
+        });
+    }
   }
 
   renderMoreResults(infiniteScroll) {
@@ -76,6 +87,24 @@ export class IssuesPage {
 
   navigateToGitHub(url: string) {
     this.inAppBrowser.create(url, '_blank', 'clearsessioncache=no');
+  }
+
+  showNoTokenAlert() {
+    const alert = this.alertCtrl.create({
+      title: 'Error',
+      subTitle: `No token`,
+      buttons: ['SORRY']
+    });
+    alert.present();
+  }
+
+  showIssuesAlert(message: string) {
+    const alert = this.alertCtrl.create({
+      title: 'GitHub Error',
+      subTitle: `Error fetching assigned issues: ${message}`,
+      buttons: ['SORRY']
+    });
+    alert.present();
   }
 
 }
