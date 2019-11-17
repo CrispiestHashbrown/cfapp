@@ -12,7 +12,7 @@ import { SearchServiceProvider } from '../../providers/search/search.service';
 })
 export class SearchPage {
 
-  searchQuery: string;
+  searchQuery: string = '';
   resultsCount: number;
   hideInfiniteScroll: boolean;
   linkHeader: string = '';
