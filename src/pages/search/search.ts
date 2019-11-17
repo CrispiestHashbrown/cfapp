@@ -16,6 +16,7 @@ export class SearchPage {
   resultsCount: number;
   hideInfiniteScroll: boolean;
   linkHeader: string = '';
+  pageNumber: number = 1;
   searchResults: Search[] = [];
 
   constructor(
@@ -35,6 +36,7 @@ export class SearchPage {
     if (!infiniteScroll) {
       this.hideInfiniteScroll = false;
       this.linkHeader = '';
+      this.pageNumber = 1;
       this.searchResults = [];
     }
 
@@ -85,12 +87,10 @@ export class SearchPage {
     var nextLink: string = '';
     const doesNextLinkExist = headerString.includes(`>; rel="next",`);
     if (doesNextLinkExist) {
-      var split = headerString.split(', <');
-      nextLink = split.find(function (element) {
-        return element.includes(`>; rel="next"`);
-      });
-      nextLink = nextLink.substring(nextLink.indexOf(`q=`)+2, nextLink.indexOf(`>; rel="next"`));
+      this.pageNumber++;
+      nextLink = `${this.searchQuery} &page=${this.pageNumber}`;
     }
+
     return nextLink;
   }
 
