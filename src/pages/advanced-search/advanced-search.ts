@@ -12,11 +12,11 @@ export class AdvancedSearchPage {
   searchQuery: string = '';
 
   queryArray: string[] = [
-    'org:',
-    'stars:',
-    'language:',
-    'good-first-issues:',
-    'help-wanted-issues:'
+    'org',
+    'stars',
+    'language',
+    'good-first-issues',
+    'help-wanted-issues'
   ]
 
   inputArray: string[] = [
@@ -28,6 +28,7 @@ export class AdvancedSearchPage {
   ]
 
   languageArray: string[] = [
+    'Any',
     'C',
     'C#',
     'C++',
@@ -54,12 +55,17 @@ export class AdvancedSearchPage {
   ]
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.searchQuery = window.localStorage.getItem('searchQuery');
-    this.inputArray[0] = window.localStorage.getItem('orgInput');
-    this.inputArray[1] = window.localStorage.getItem('starsInput');
-    this.inputArray[2] = window.localStorage.getItem('languageInput');
-    this.inputArray[3] = window.localStorage.getItem('goodFirstIssuesInput');
-    this.inputArray[4] = window.localStorage.getItem('helpWantedLabelsInput');
+    let searchQuery = window.localStorage.getItem('searchQuery');
+    if (searchQuery != null) {
+      this.searchQuery = searchQuery;
+    }
+
+    for (var i = 0; i < 5; i++) {
+      let queryVariable = window.localStorage.getItem(this.queryArray[i]);
+      if (queryVariable != null) {
+        this.inputArray[i] = queryVariable;
+      }
+    }
   }
 
   forwardSearchQuery() {
@@ -73,20 +79,24 @@ export class AdvancedSearchPage {
   formSearchQuery() {
     this.fullQuery = this.searchQuery;
     for (var i = 0; i < 5; i++) {
-      if (this.inputArray[i].length > 0) {
-        this.queryArray[i] += this.inputArray[i];
-        this.fullQuery += ` ${this.queryArray[i]}`;
+      if (this.inputArray[i].length > 0 && this.inputArray[i] != 'Any') {
+        this.fullQuery += ` ${this.queryArray[i]}:${this.inputArray[i]}`;
       }
     }
   }
 
   saveInputsToLocalStorage() {
-    window.localStorage.setItem('searchQuery', this.searchQuery);
-    window.localStorage.setItem('orgInput', this.inputArray[0]);
-    window.localStorage.setItem('starsInput', this.inputArray[1]);
-    window.localStorage.setItem('languageInput', this.inputArray[2]);
-    window.localStorage.setItem('goodFirstIssuesInput', this.inputArray[3]);
-    window.localStorage.setItem('helpWantedLabelsInput', this.inputArray[4]);
+    let searchQuery = this.searchQuery;
+    if (searchQuery != null) {
+      window.localStorage.setItem('searchQuery', searchQuery);
+    }
+
+    for (var i = 0; i < 5; i++) {
+      let input = this.inputArray[i];
+      if (input != null) {
+        window.localStorage.setItem(this.queryArray[i], input);
+      }
+    }
   }
 
 }

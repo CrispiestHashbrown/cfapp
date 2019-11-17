@@ -49,7 +49,6 @@
   <ion-item>
     <ion-label stacked>Written in this language</ion-label>
     <ion-select [(ngModel)]="inputArray[2]" placeholder='Language (default: Any)' [selectedText]="inputArray[2]">
-      <ion-option value="">Any</ion-option>
       <ion-option *ngFor="let language of languageArray" [value]="language">{{language}}</ion-option>
     </ion-select>
   </ion-item>
