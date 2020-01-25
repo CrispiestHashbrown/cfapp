@@ -1,7 +1,7 @@
 # cfapp
 The Commit Frequency App is a mobile Ionic webapp that adds a contribution history chart for every search result from GitHub. This lets the user know how active project development has been within the past half year for any particular repository.
 
- ![cfapp-walkthrough](https://media.giphy.com/media/Jo1QJ5nu7nF4Zqgk1J/giphy.gif)
+ ![cfapp-walkthrough](https://media.giphy.com/media/W5NJs3Y1jRH1wSOiiS/giphy.gif)
 
 ## Getting started
 Clone the application: 
