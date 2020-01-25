@@ -12,6 +12,10 @@ Navigate to the project directory and install dependencies:
 ```
 npm install
 ```
+Install the [Ionic and Cordova CLI](https://ionicframework.com/docs/v3/intro/installation/):
+```
+npm install -g ionic cordova
+```
 Testing on your machine browser:
 ```
 ionic serve
