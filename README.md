@@ -24,9 +24,9 @@ To build an Android debug apk:
 ```
 ionic cordova run android --debug
 ```
-To build an Android release apk:
+To build an Android release apk, run the following command and follow the steps [here](https://ionicframework.com/docs/v1/guide/publishing.html):
 ```
-ionic cordova run android --prod --release
+ionic cordova run android --release
 ```
 Builds can be found at:
 ```
